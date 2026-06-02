@@ -1,0 +1,36 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(command -v php)",
+      "Bash(command -v composer)",
+      "Bash(command -v node)",
+      "Bash(command -v npm)",
+      "Bash(npm -v)",
+      "Bash(chmod +x setup.sh)",
+      "Bash(./setup.sh)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:8000/css/filament/filament/app.css)",
+      "Bash(curl -s http://localhost:8000/css/filament/filament/app.css)",
+      "Bash(kill b3qal78n8 *)",
+      "Bash(pkill -f \"artisan serve\")",
+      "Bash(PHP_CLI_SERVER_WORKERS=4 php artisan serve)",
+      "Bash(curl -s -o /dev/null -w \"Admin status: %{http_code}, time: %{time_total}s\\\\n\" http://localhost:8000/admin/login)",
+      "Bash(curl -s -o /dev/null -w \"CSS status: %{http_code}, time: %{time_total}s\\\\n\" http://localhost:8000/css/filament/filament/app.css)",
+      "Bash(curl -s -o /dev/null -w \"Admin: %{http_code} | %{time_total}s\\\\n\" http://localhost:8000/admin/login)",
+      "Bash(curl -s -o /dev/null -w \"Admin: %{http_code}\\\\n\" http://localhost:8000/admin)",
+      "Bash(curl -s -o /dev/null -w \"Admin login: %{http_code} | total: %{time_total}s | TTFB: %{time_starttransfer}s\\\\n\" http://localhost:8000/admin/login)",
+      "Bash(curl -s -o /dev/null -w 'Run __TRACKED_VAR__: %{time_total}s\\\\n' http://localhost:8000/admin/login)",
+      "Bash(curl -s -o /dev/null -w \"API categories: %{time_total}s\\\\n\" http://localhost:8000/api/v1/categories)",
+      "Bash(curl -s -o /dev/null -w \"API products: %{time_total}s\\\\n\" http://localhost:8000/api/v1/products)",
+      "Bash(curl -s -o /dev/null -w \"API featured: %{time_total}s\\\\n\" http://localhost:8000/api/v1/products/featured)",
+      "Bash(curl -s -o /dev/null -w \"Login: %{time_total}s\\\\n\" http://localhost:8000/admin/login)",
+      "Bash(curl -s -o /dev/null -w \"categories: %{time_total}s\\\\n\" http://localhost:8000/api/v1/categories)",
+      "Bash(curl -s -o /dev/null -w \"products: %{time_total}s\\\\n\" http://localhost:8000/api/v1/products)",
+      "Bash(curl -s -o /dev/null -w \"featured: %{time_total}s\\\\n\" http://localhost:8000/api/v1/products/featured)",
+      "Bash(command -v sshpass)",
+      "Bash(command -v expect)",
+      "Bash(python3 /tmp/ssh_explore2.py 'bash ~/deploy.sh 2>&1')",
+      "Bash(python3 /tmp/ssh_scp.py up /home/u540014235/deploy_continue.sh /tmp/deploy_continue.sh)",
+      "Bash(python3 /tmp/ssh_explore2.py 'bash ~/deploy_continue.sh 2>&1')"
+    ]
+  }
+}

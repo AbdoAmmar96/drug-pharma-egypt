@@ -1,0 +1,553 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   Drug Pharma Egypt — global design tokens
+   ============================================================ */
+
+:root {
+  --navy: #1B2360;
+  --navy-700: #2A337A;
+  --navy-900: #11163F;
+  --orange: #E87330;
+  --orange-700: #C95A1B;
+  --orange-200: #FBE3D2;
+  --bg: #FAFAF7;
+  --text: #1F1F2E;
+  --muted: #6B6B7A;
+  --line: #E8E8EA;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: 'Outfit', sans-serif;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--navy);
+  margin: 0;
+}
+
+/* ============ Arabic / RTL ============ */
+html[lang="ar"] body,
+html[lang="ar"] input,
+html[lang="ar"] textarea,
+html[lang="ar"] select,
+html[lang="ar"] button {
+  font-family: 'Cairo', 'DM Sans', system-ui, sans-serif;
+}
+html[lang="ar"] h1,
+html[lang="ar"] h2,
+html[lang="ar"] h3,
+html[lang="ar"] h4,
+html[lang="ar"] h5 {
+  font-family: 'Cairo', 'Outfit', sans-serif;
+  letter-spacing: 0;
+}
+/* RTL-specific tweaks */
+html[dir="rtl"] .floating-card.fc-1 { left: auto; right: 0; }
+html[dir="rtl"] .floating-card.fc-2 { right: auto; left: 40px; }
+html[dir="rtl"] .arrow { display: inline-block; transform: scaleX(-1); }
+html[dir="rtl"] .btn:hover .arrow { transform: scaleX(-1) translateX(4px); }
+
+/* ============ Buttons ============ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 28px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 15px;
+  transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  text-decoration: none;
+}
+.btn-primary {
+  background: var(--navy);
+  color: #fff;
+  box-shadow: 0 6px 20px rgba(27, 35, 96, 0.25);
+}
+.btn-primary:hover {
+  background: var(--navy-700);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(27, 35, 96, 0.35);
+}
+.btn-orange {
+  background: var(--orange);
+  color: #fff;
+  box-shadow: 0 6px 20px rgba(232, 115, 48, 0.35);
+}
+.btn-orange:hover {
+  background: var(--orange-700);
+  transform: translateY(-2px);
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--navy);
+  border: 1.5px solid var(--navy);
+}
+.btn-ghost:hover {
+  background: var(--navy);
+  color: #fff;
+}
+.btn .arrow { transition: transform 0.2s; }
+.btn:hover .arrow { transform: translateX(4px); }
+
+/* ============ Hero circular visual ============ */
+.hero-backdrop {
+  position: absolute;
+  width: 440px;
+  height: 440px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: #fff;
+  border: 14px solid var(--navy);
+  box-shadow: 0 30px 80px rgba(27, 35, 96, 0.18);
+  overflow: hidden;
+}
+.hero-backdrop::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 22% 30%, rgba(232, 115, 48, 0.55) 7px, transparent 8px),
+    radial-gradient(circle at 78% 28%, rgba(27, 35, 96, 0.4) 5px, transparent 6px),
+    radial-gradient(circle at 30% 75%, rgba(232, 115, 48, 0.45) 6px, transparent 7px),
+    radial-gradient(circle at 72% 78%, rgba(27, 35, 96, 0.45) 5px, transparent 6px),
+    radial-gradient(circle at 50% 18%, rgba(232, 115, 48, 0.35) 4px, transparent 5px);
+}
+.hero-product-circle {
+  position: relative;
+  z-index: 3;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  background: var(--orange);
+  padding: 30px;
+  object-fit: contain;
+  box-shadow: 0 25px 50px rgba(232, 115, 48, 0.35), 0 0 0 6px rgba(255, 255, 255, 0.6);
+  animation: float 6s ease-in-out infinite;
+}
+.hero-product-circle--icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 96px;
+  color: #fff;
+}
+/* For full-bleed SVG illustrations / photos: clean white circle, no orange bg */
+.hero-product-circle--illustration {
+  background: #fff;
+  padding: 0;
+  overflow: hidden;
+  box-shadow: 0 25px 50px rgba(27, 35, 96, 0.18), 0 0 0 6px rgba(255, 255, 255, 0.6);
+}
+.hero-product-circle--illustration .hero-illustration {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.hero-product-circle--illustration img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+.floating-card {
+  position: absolute;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(27, 35, 96, 0.06), 0 12px 32px rgba(27, 35, 96, 0.08);
+  padding: 14px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 4;
+}
+.floating-card .icon-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--orange-200);
+  color: var(--orange-700);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.floating-card.fc-1 { top: 40px; left: 0; animation: float 5s ease-in-out infinite; }
+.floating-card.fc-2 { bottom: 50px; right: 40px; animation: float 6s ease-in-out infinite reverse; }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.5); }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============ Category cards ============ */
+.cat-card {
+  position: relative;
+  border-radius: 24px;
+  padding: 28px 24px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.4s, box-shadow 0.4s;
+  min-height: 280px;
+  display: flex;
+  flex-direction: row;
+  gap: 22px;
+  text-decoration: none;
+  color: inherit;
+}
+.cat-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 30px rgba(27, 35, 96, 0.10), 0 30px 60px rgba(27, 35, 96, 0.12);
+}
+.cat-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.cat-card .num {
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  opacity: 0.6;
+}
+.cat-card h3 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  line-height: 1.2;
+}
+.cat-card p {
+  font-size: 14px;
+  opacity: 0.85;
+  margin: 0;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* Dark/colored cards: white text */
+.cat-card.bg-navy p,
+.cat-card.bg-navy .num,
+.cat-card.bg-navy .cat-cta,
+.cat-card.bg-orange p,
+.cat-card.bg-orange .num,
+.cat-card.bg-orange .cat-cta {
+  color: #fff;
+  opacity: 0.95;
+}
+.cat-card.bg-navy h3,
+.cat-card.bg-orange h3 {
+  color: #fff;
+}
+
+/* Light cards: orange description + CTA */
+.cat-card.cat-light p,
+.cat-card.cat-light .cat-cta {
+  color: #E87330;
+  opacity: 1;
+}
+.cat-card.cat-light .num {
+  color: #B8B8C2;
+  opacity: 1;
+}
+
+/* Peach card (pregnant-women): orange description */
+.cat-card.bg-orange-200 p,
+.cat-card.bg-orange-200 .cat-cta {
+  color: #C84F0F;
+  opacity: 1;
+}
+.cat-card.bg-orange-200 .num {
+  color: #1F1F2E;
+  opacity: 0.5;
+}
+.cat-card .cat-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 20px;
+  font-weight: 600;
+  font-size: 14px;
+}
+.cat-product-frame {
+  flex: 0 0 130px;
+  align-self: center;
+  aspect-ratio: 1 / 1;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.94);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px;
+  box-shadow: 0 4px 12px rgba(27, 35, 96, 0.08);
+  transition: transform 0.4s ease;
+}
+.cat-product-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform 0.4s ease;
+}
+.cat-card:hover .cat-product-frame {
+  transform: scale(1.04) rotate(-2deg);
+}
+.cat-card:hover .cat-product-frame img {
+  transform: scale(1.06);
+}
+.cat-card.cat-light .cat-product-frame {
+  background: rgba(232, 115, 48, 0.08);
+  box-shadow: inset 0 0 0 1px rgba(232, 115, 48, 0.18), 0 4px 12px rgba(27, 35, 96, 0.04);
+}
+
+/* ============ Reveal on scroll ============ */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s, transform 0.7s;
+}
+.reveal.in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============ Tablet ============ */
+@media (max-width: 980px) {
+  .hero-backdrop { width: 340px; height: 340px; border-width: 12px; }
+  .hero-product-circle { width: 220px; height: 220px; padding: 24px; }
+  .hero-product-circle--icon { font-size: 72px; }
+  .cat-card { min-height: 240px; padding: 24px 20px; gap: 18px; }
+  .cat-card h3 { font-size: 22px; }
+  .cat-product-frame { flex: 0 0 110px; }
+}
+
+/* On mobile/tablet: image-first hero (image above text on Home/About/Contact) */
+@media (max-width: 1023px) {
+  .hero-image-first { display: flex !important; flex-direction: column !important; }
+  .hero-image-first > .hero-image-block { order: -1; }
+}
+
+/* ============ Mobile ============ */
+@media (max-width: 640px) {
+  .hero-backdrop { width: 240px; height: 240px; border-width: 8px; }
+  .hero-product-circle { width: 160px; height: 160px; padding: 16px; }
+  .hero-product-circle--icon { font-size: 48px; }
+
+  /* Hero image block: tighter height so floating cards aren't clipped */
+  .hero-image-block {
+    height: 300px !important;
+    margin-top: 8px;
+  }
+
+  /* Tighten section vertical rhythm globally on mobile */
+  main section.py-24,
+  main section.py-20,
+  main section.py-16,
+  main section.py-12,
+  main section.py-10 {
+    padding-top: 24px !important;
+    padding-bottom: 24px !important;
+  }
+  main section.relative.py-24,
+  main section.relative.py-20 {
+    padding-top: 12px !important;
+    padding-bottom: 24px !important;
+  }
+
+  /* When the hero stacks (image above text), tighten the gap between them */
+  .hero-image-first { gap: 16px !important; }
+
+  /* Reduce inner padding of dark CTA / timeline panels */
+  main section .rounded-3xl.p-16,
+  main section .rounded-3xl.lg\:p-20 {
+    padding: 28px 22px !important;
+    border-radius: 22px !important;
+  }
+
+  /* Tighter heading margins */
+  .text-center.mb-14 { margin-bottom: 28px !important; }
+  .text-center.mb-10 { margin-bottom: 22px !important; }
+
+  .floating-card { font-size: 11px; padding: 8px 12px; }
+  .floating-card .icon-circle { width: 28px; height: 28px; font-size: 14px; }
+
+  /* Category cards: text on left, image on right (horizontal) on mobile */
+  .cat-card {
+    flex-direction: row;
+    min-height: auto;
+    padding: 18px 16px;
+    gap: 14px;
+    align-items: center;
+  }
+  .cat-card h3 { font-size: 17px; margin-bottom: 4px; }
+  .cat-card p {
+    font-size: 12px;
+    line-height: 1.4;
+    -webkit-line-clamp: 1;
+    white-space: nowrap;
+  }
+  .cat-card .num { font-size: 11px; margin-bottom: 6px; }
+  .cat-card .cat-cta { font-size: 12px; margin-top: 10px; }
+  .cat-product-frame {
+    flex: 0 0 80px;
+    width: 80px;
+    height: 80px;
+    padding: 8px;
+    border-radius: 12px;
+    align-self: center;
+  }
+
+  /* Buttons: full width */
+  .btn { padding: 12px 20px; font-size: 14px; }
+
+  /* Topbar: hide some items */
+  header + .bg-navy a:nth-of-type(2),
+  .bg-navy.text-white .opacity-90:nth-of-type(2) { display: none; }
+}
+
+/* ============ Small mobile ============ */
+@media (max-width: 480px) {
+  .hero-backdrop { width: 220px; height: 220px; }
+  .hero-product-circle { width: 150px; height: 150px; padding: 14px; }
+  .floating-card { font-size: 10.5px; padding: 7px 10px; }
+}
+
+/* RTL adjustments */
+html[dir='rtl'] .arrow { transform: scaleX(-1); display: inline-block; }
+html[dir='rtl'] .cat-product-frame { align-self: flex-start; }
+
+/* ============ About: Timeline (mobile = vertical, smaller) ============ */
+@media (max-width: 640px) {
+  .timeline-card {
+    padding: 24px 18px !important;
+    border-radius: 20px !important;
+  }
+  .timeline-eyebrow { font-size: 11px !important; margin-bottom: 8px !important; }
+  .timeline-title { font-size: 22px !important; margin-bottom: 6px !important; }
+  .timeline-subtitle {
+    font-size: 13px !important;
+    margin-bottom: 22px !important;
+    line-height: 1.5;
+  }
+
+  /* Vertical stack */
+  .timeline-grid {
+    grid-template-columns: 1fr !important;
+    gap: 0 !important;
+    padding-inline-start: 22px;
+  }
+  .timeline-line-h { display: none !important; }
+  .timeline-line-v {
+    display: block !important;
+    inset-inline-start: 6px !important;
+    top: 8px !important;
+    bottom: 8px !important;
+  }
+  html[dir='rtl'] .timeline-line-v { inset-inline-start: auto !important; inset-inline-end: 6px !important; }
+
+  .timeline-item {
+    padding-bottom: 18px;
+  }
+  .timeline-item:last-child { padding-bottom: 0; }
+
+  .timeline-dot {
+    position: absolute !important;
+    inset-inline-start: -22px !important;
+    top: 4px !important;
+    margin-bottom: 0 !important;
+    width: 12px !important;
+    height: 12px !important;
+  }
+  html[dir='rtl'] .timeline-dot { inset-inline-start: auto !important; inset-inline-end: -22px !important; }
+
+  .timeline-year { font-size: 18px !important; margin-bottom: 2px !important; line-height: 1; }
+  .timeline-item-title { font-size: 13px !important; margin-bottom: 0 !important; font-weight: 600; }
+  .timeline-item-desc { display: none !important; }
+}
+
+/* Product card description: 2-line clamp on mobile */
+@media (max-width: 640px) {
+  .product-card-desc {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 12px;
+  }
+
+  /* ProductCard tweaks: smaller name + badge, bigger image */
+  .product-card { padding: 12px !important; border-radius: 18px !important; }
+  .product-card-image-wrap {
+    aspect-ratio: 1 / 1;
+    margin-bottom: 10px !important;
+    border-radius: 14px !important;
+  }
+  .product-card-image-wrap img {
+    max-width: 92% !important;
+    max-height: 92% !important;
+  }
+  .product-card-badge {
+    font-size: 7px !important;
+    padding: 1.5px 5px !important;
+    margin-bottom: 4px !important;
+    letter-spacing: 0.02em !important;
+    line-height: 1.2 !important;
+    font-weight: 700 !important;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .product-card-name {
+    font-size: 13.5px !important;
+    line-height: 1.25 !important;
+    margin-bottom: 4px !important;
+  }
+  .product-card-form {
+    margin-top: 10px !important;
+    padding-top: 8px !important;
+    font-size: 10.5px !important;
+  }
+  .product-card-form .form-arrow {
+    width: 22px !important;
+    height: 22px !important;
+    font-size: 12px !important;
+  }
+}
