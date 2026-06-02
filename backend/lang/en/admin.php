@@ -40,8 +40,11 @@ return [
         'fields' => [
             'name'        => 'Name',
             'slug'        => 'Slug',
-            'category'    => 'Category',
-            'form'        => 'Form (e.g., Tablet, Syrup)',
+            'category'              => 'Primary Category',
+            'category_help'         => 'The main category this product belongs to.',
+            'extra_categories'      => 'Additional Categories',
+            'extra_categories_help' => 'Optional — show this product in other categories as well.',
+            'form'                  => 'Form (e.g., Tablet, Syrup)',
             'description' => 'Description',
             'composition' => 'Composition',
             'uses'        => 'Uses',

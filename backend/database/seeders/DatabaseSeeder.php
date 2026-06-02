@@ -20,10 +20,10 @@ class DatabaseSeeder extends Seeder
     private function seedAdminUser(): void
     {
         User::updateOrCreate(
-            ['email' => 'admin@drugpharmaeg.com'],
+            ['email' => 'admin@drugpharma-eg.com'],
             [
                 'name'              => 'Admin',
-                'password'          => Hash::make('password'),
+                'password'          => Hash::make('16598161okfk;jjhb'),
                 'email_verified_at' => now(),
             ]
         );

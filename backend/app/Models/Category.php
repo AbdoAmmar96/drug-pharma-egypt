@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 
 class Category extends Model
@@ -35,14 +36,21 @@ class Category extends Model
         });
     }
 
-    public function products(): HasMany
+    public function products(): BelongsToMany
     {
-        return $this->hasMany(Product::class)->orderBy('sort_order');
+        return $this->belongsToMany(Product::class)
+            ->orderBy('products.sort_order')
+            ->orderBy('products.name');
     }
 
-    public function activeProducts(): HasMany
+    public function activeProducts(): BelongsToMany
     {
-        return $this->products()->where('is_active', true);
+        return $this->products()->where('products.is_active', true);
+    }
+
+    public function primaryProducts(): HasMany
+    {
+        return $this->hasMany(Product::class)->orderBy('sort_order');
     }
 
     public function scopeActive(Builder $query): Builder

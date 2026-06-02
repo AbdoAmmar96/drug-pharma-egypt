@@ -113,4 +113,12 @@ return [
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Contact form recipient
+    |--------------------------------------------------------------------------
+    | Where the public contact form submissions are delivered.
+    */
+    'contact_to' => env('MAIL_CONTACT_TO', 'hr@drugpharmaeg.com'),
+
 ];

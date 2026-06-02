@@ -88,7 +88,7 @@ export default function Products() {
                   : 'bg-white border-line hover:border-navy text-[#1F1F2E]'
               }`}
             >
-              {t('products.filterAll')} <span className="opacity-60 ms-1 font-medium">{categories.reduce((s, c) => s + (c.products_count ?? 0), 0) || ''}</span>
+              {t('products.filterAll')}
             </button>
             {categories.map((cat) => (
               <button
@@ -101,7 +101,7 @@ export default function Products() {
                     : 'bg-white border-line hover:border-navy text-[#1F1F2E]'
                 }`}
               >
-                {localCatName(cat)} <span className="opacity-60 ms-1 font-medium">{cat.products_count}</span>
+                {localCatName(cat)}
               </button>
             ))}
           </div>
@@ -159,7 +159,7 @@ export default function Products() {
                     : 'bg-white border-line text-[#1F1F2E]'
                 }`}
               >
-                {t('products.filterAll')} <span className="opacity-60 ms-2 font-medium">{categories.reduce((s, c) => s + (c.products_count ?? 0), 0) || ''}</span>
+                {t('products.filterAll')}
               </button>
               {categories.map((cat) => (
                 <button
@@ -172,7 +172,7 @@ export default function Products() {
                       : 'bg-white border-line text-[#1F1F2E]'
                   }`}
                 >
-                  {localCatName(cat)} <span className="opacity-60 ms-2 font-medium">{cat.products_count}</span>
+                  {localCatName(cat)}
                 </button>
               ))}
             </div>

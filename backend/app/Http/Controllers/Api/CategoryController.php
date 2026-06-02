@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Http\JsonResponse;
 
 class CategoryController extends Controller
@@ -17,8 +18,16 @@ class CategoryController extends Controller
         $categories = Category::query()
             ->active()
             ->ordered()
-            ->withCount(['activeProducts as products_count'])
             ->get(['id', 'slug', 'name', 'description', 'icon', 'sort_order']);
+
+        $categories->each(function (Category $category) {
+            $primaryIds = Product::query()
+                ->where('category_id', $category->id)
+                ->where('is_active', true)
+                ->pluck('id');
+            $pivotIds = $category->activeProducts()->pluck('products.id');
+            $category->products_count = $primaryIds->merge($pivotIds)->unique()->count();
+        });
 
         return response()->json([
             'data' => $categories,
@@ -35,10 +44,27 @@ class CategoryController extends Controller
             abort(404);
         }
 
-        $category->load(['activeProducts' => fn ($q) => $q->ordered()]);
+        // Combine primary (category_id) and pivot products, deduped
+        $primary = Product::query()
+            ->where('category_id', $category->id)
+            ->where('is_active', true)
+            ->with('category:id,slug,name,icon')
+            ->ordered()
+            ->get();
+        $pivot = $category->activeProducts()
+            ->with('category:id,slug,name,icon')
+            ->get();
+
+        $products = $primary->concat($pivot)->unique('id')->sortBy([
+            ['sort_order', 'asc'],
+            ['name', 'asc'],
+        ])->values();
+
+        $data = $category->toArray();
+        $data['active_products'] = $products;
 
         return response()->json([
-            'data' => $category,
+            'data' => $data,
         ]);
     }
 }

@@ -17,11 +17,14 @@ class ProductController extends Controller
     {
         $query = Product::query()
             ->active()
-            ->with('category:id,slug,name,icon')
+            ->with(['category:id,slug,name,icon', 'categories:id,slug,name,icon'])
             ->ordered();
 
         if ($category = $request->string('category')->toString()) {
-            $query->whereHas('category', fn ($q) => $q->where('slug', $category));
+            $query->where(function ($q) use ($category) {
+                $q->whereHas('category', fn ($c) => $c->where('slug', $category))
+                  ->orWhereHas('categories', fn ($c) => $c->where('categories.slug', $category));
+            });
         }
 
         if ($search = $request->string('search')->toString()) {
@@ -53,7 +56,7 @@ class ProductController extends Controller
         $products = Product::query()
             ->active()
             ->featured()
-            ->with('category:id,slug,name,icon')
+            ->with(['category:id,slug,name,icon', 'categories:id,slug,name,icon'])
             ->ordered()
             ->limit(8)
             ->get();
@@ -73,14 +76,18 @@ class ProductController extends Controller
             abort(404);
         }
 
-        $product->load('category:id,slug,name,icon');
+        $product->load(['category:id,slug,name,icon', 'categories:id,slug,name,icon']);
 
-        // Related products in the same category
+        // Related products in the same primary category OR sharing any category
+        $categoryIds = $product->categories->pluck('id')->push($product->category_id)->unique()->all();
         $related = Product::query()
             ->active()
-            ->where('category_id', $product->category_id)
             ->where('id', '!=', $product->id)
-            ->with('category:id,slug,name,icon')
+            ->where(function ($q) use ($product, $categoryIds) {
+                $q->whereIn('category_id', $categoryIds)
+                  ->orWhereHas('categories', fn ($c) => $c->whereIn('categories.id', $categoryIds));
+            })
+            ->with(['category:id,slug,name,icon', 'categories:id,slug,name,icon'])
             ->ordered()
             ->limit(4)
             ->get();

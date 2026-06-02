@@ -68,7 +68,16 @@ class ProductResource extends Resource
                                     ->relationship('category', 'name')
                                     ->required()
                                     ->preload()
-                                    ->searchable(),
+                                    ->searchable()
+                                    ->helperText(__('admin.product.fields.category_help')),
+
+                                Forms\Components\Select::make('categories')
+                                    ->label(__('admin.product.fields.extra_categories'))
+                                    ->relationship('categories', 'name')
+                                    ->multiple()
+                                    ->preload()
+                                    ->searchable()
+                                    ->helperText(__('admin.product.fields.extra_categories_help')),
 
                                 Forms\Components\TextInput::make('form')
                                     ->label(__('admin.product.fields.form'))
