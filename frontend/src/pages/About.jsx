@@ -1,9 +1,20 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import AboutIllustration from '../components/AboutIllustration'
+import ContactModal from '../components/ContactModal.jsx'
 import { useLang } from '../i18n/index.jsx'
 
 export default function About() {
   const { t } = useLang()
+  const [modal, setModal] = useState(null)
+
+  const pillars = [
+    { num: '01', titleKey: 'pillar1Title', descKey: 'pillar1Desc', topic: 'general' },
+    { num: '02', titleKey: 'pillar2Title', descKey: 'pillar2Desc', topic: 'product' },
+    { num: '03', titleKey: 'pillar3Title', descKey: 'pillar3Desc', topic: 'product' },
+    { num: '04', titleKey: 'pillar4Title', descKey: 'pillar4Desc', topic: 'apis', group: true },
+    { num: '05', titleKey: 'pillar5Title', descKey: 'pillar5Desc', topic: 'manufacturing' },
+  ]
 
   // Helper to render text with **bold** markers as <strong>
   const renderBold = (str) => {
@@ -83,17 +94,56 @@ export default function About() {
           <p className="text-[#6B6B7A] text-[17px] max-w-[600px] mb-12">{t('about.pillarsSubtitle')}</p>
 
           <div className="grid md:grid-cols-3 gap-5">
-            {['01', '02', '03'].map((num, i) => (
-              <div key={num} className="bg-white p-9 rounded-3xl border border-line transition-all hover:-translate-y-1.5 hover:shadow-card relative overflow-hidden group">
-                <div className="text-orange-200 text-6xl font-extrabold leading-none mb-4 font-display">{num}</div>
-                <h3 className="text-2xl mb-3">{t(`about.pillar${i+1}Title`)}</h3>
-                <p className="text-[14.5px] text-[#6B6B7A]">{t(`about.pillar${i+1}Desc`)}</p>
+            {pillars.slice(0, 3).map((p) => (
+              <button
+                key={p.num}
+                type="button"
+                onClick={() => setModal(p)}
+                className="text-left bg-white p-9 rounded-3xl border border-line transition-all hover:-translate-y-1.5 hover:shadow-card relative overflow-hidden group focus:outline-none focus:ring-2 focus:ring-orange/40"
+              >
+                <div className="text-orange-200 text-6xl font-extrabold leading-none mb-4 font-display">{p.num}</div>
+                <h3 className="text-2xl mb-3">{t(`about.${p.titleKey}`)}</h3>
+                <p className="text-[14.5px] text-[#6B6B7A]">{t(`about.${p.descKey}`)}</p>
                 <div className="absolute top-0 left-0 w-full h-1 bg-orange origin-left scale-x-0 transition-transform duration-500 group-hover:scale-x-100" />
-              </div>
+              </button>
+            ))}
+          </div>
+
+          <div className="mt-14 mb-5 flex items-center gap-3">
+            <span className="h-px flex-1 bg-line" />
+            <span className="text-[12px] tracking-[0.18em] uppercase font-semibold text-orange-700">{t('about.pillar4Group')}</span>
+            <span className="h-px flex-1 bg-line" />
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-5">
+            {pillars.slice(3).map((p) => (
+              <button
+                key={p.num}
+                type="button"
+                onClick={() => setModal(p)}
+                className="text-left bg-gradient-to-br from-orange-200/40 to-white p-9 rounded-3xl border border-line transition-all hover:-translate-y-1.5 hover:shadow-card relative overflow-hidden group focus:outline-none focus:ring-2 focus:ring-orange/40"
+              >
+                <div className="text-orange-200 text-6xl font-extrabold leading-none mb-4 font-display">{p.num}</div>
+                <h3 className="text-2xl mb-3">{t(`about.${p.titleKey}`)}</h3>
+                <p className="text-[14.5px] text-[#6B6B7A]">{t(`about.${p.descKey}`)}</p>
+                <span className="inline-flex items-center gap-1 mt-5 text-orange-700 text-sm font-semibold">
+                  {t('about.pillarCta')} <span className="arrow">→</span>
+                </span>
+                <div className="absolute top-0 left-0 w-full h-1 bg-orange origin-left scale-x-0 transition-transform duration-500 group-hover:scale-x-100" />
+              </button>
             ))}
           </div>
         </div>
       </section>
+
+      <ContactModal
+        open={!!modal}
+        onClose={() => setModal(null)}
+        title={modal ? t(`about.${modal.titleKey}`) : ''}
+        subtitle={modal ? t(`about.${modal.descKey}`) : ''}
+        defaultTopic={modal?.topic}
+        defaultMessage={modal ? `Inquiry about: ${t(`about.${modal.titleKey}`)}\n\n` : ''}
+      />
 
       {/* Timeline */}
       <section className="py-20 timeline-section">
