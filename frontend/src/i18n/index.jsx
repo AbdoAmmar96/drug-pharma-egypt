@@ -65,7 +65,7 @@ const translations = {
     finalCtaBtn: 'Get in Touch',
 
     loading: 'Loading…',
-    viewProducts: 'View {count} products',
+    viewProducts: 'View Products',
   },
   // ===== About =====
   about: {

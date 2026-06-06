@@ -179,6 +179,8 @@ tar -cf - -C "$ROOT/backend" \
 
 # Webroot payload = dist + minimal backend/public bits (favicon, .htaccess optional)
 cp -a "$ROOT/frontend/dist/." "$PKG/public/"
+# Include the canonical .htaccess so it can be restored if someone broke it
+[[ -f "$ROOT/scripts/htaccess.conf" ]] && cp "$ROOT/scripts/htaccess.conf" "$PKG/public/.htaccess.canonical"
 [[ -f "$ROOT/backend/public/favicon.ico" ]] && cp "$ROOT/backend/public/favicon.ico" "$PKG/public/" || true
 [[ -f "$ROOT/backend/public/robots.txt" ]]  && cp "$ROOT/backend/public/robots.txt"  "$PKG/public/" || true
 # WebP images only (PNG originals stay on the server only if you push --images separately)
@@ -249,6 +251,10 @@ cd laravel-drugpharma
 mkdir -p storage/framework/{cache/data,sessions,views} storage/logs storage/app/public bootstrap/cache
 chmod -R ug+rwX storage bootstrap/cache database
 
+# Re-create public/ -> public_html symlink (architecture-specific: this server keeps webroot outside the app dir)
+rm -rf public
+ln -sfn ~/domains/drugpharmaeg.com/public_html public
+
 # DB migrations & cache rebuild
 php artisan migrate --force 2>&1 | tail -10
 php artisan config:clear
@@ -256,13 +262,18 @@ php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 
-# storage symlink (idempotent)
-php artisan storage:link 2>&1 | tail -2 || true
+# storage symlink: public/storage -> storage/app/public (so /storage/... resolves via Apache)
+rm -f public/storage
+ln -sfn ~/laravel-drugpharma/storage/app/public public/storage
 
-# Drop new webroot on top of public_html (keep laravel.php, .htaccess as-is)
+# Drop new webroot on top of public_html (keep laravel.php as-is)
 cd ~
 rm -rf domains/drugpharmaeg.com/public_html/assets
 cp -a /tmp/dpe-extract/pkg/public/. domains/drugpharmaeg.com/public_html/
+# Restore .htaccess if missing or empty (uses the canonical version shipped in the bundle)
+if [[ -s domains/drugpharmaeg.com/public_html/.htaccess.canonical ]] && [[ ! -s domains/drugpharmaeg.com/public_html/.htaccess ]]; then
+  cp domains/drugpharmaeg.com/public_html/.htaccess.canonical domains/drugpharmaeg.com/public_html/.htaccess
+fi
 touch domains/drugpharmaeg.com/public_html/images/products/*.webp 2>/dev/null || true
 
 # Cleanup old release

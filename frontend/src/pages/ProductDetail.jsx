@@ -80,7 +80,18 @@ export default function ProductDetail() {
               {product.uses && (
                 <div className="mb-7">
                   <h3 className="text-base font-bold tracking-wide uppercase text-orange-700 mb-3">{t('detail.uses')}</h3>
-                  <p className="text-[#1F1F2E] whitespace-pre-line">{product.uses}</p>
+                  <ul className="space-y-2 text-[#1F1F2E]">
+                    {product.uses
+                      .split(/\r?\n|[،,.;•·]/)
+                      .map((s) => s.trim())
+                      .filter(Boolean)
+                      .map((use, i) => (
+                        <li key={i} className="flex items-start gap-2.5">
+                          <span className="text-orange mt-1.5 flex-shrink-0">●</span>
+                          <span>{use}</span>
+                        </li>
+                      ))}
+                  </ul>
                 </div>
               )}
               {product.dose && (
