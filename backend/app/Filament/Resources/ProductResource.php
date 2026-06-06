@@ -115,7 +115,12 @@ class ProductResource extends Resource
                                     ->disk('public')
                                     ->directory('products')
                                     ->imageEditor()
-                                    ->maxSize(3072)
+                                    ->imageResizeMode('contain')
+                                    ->imageResizeTargetWidth(1200)
+                                    ->imageResizeTargetHeight(1200)
+                                    ->imageResizeUpscale(false)
+                                    ->maxSize(10240)
+                                    ->helperText('Images are automatically resized to max 1200×1200 before upload.')
                                     ->columnSpanFull(),
                             ]),
 
