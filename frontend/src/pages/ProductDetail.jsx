@@ -86,8 +86,8 @@ export default function ProductDetail() {
                       .map((s) => s.trim())
                       .filter(Boolean)
                       .map((use, i) => (
-                        <li key={i} className="flex items-start gap-2.5">
-                          <span className="text-orange mt-1.5 flex-shrink-0">●</span>
+                        <li key={i} className="flex items-baseline gap-2.5">
+                          <span className="text-orange text-[10px] leading-none flex-shrink-0">●</span>
                           <span>{use}</span>
                         </li>
                       ))}
