@@ -130,7 +130,8 @@ export default function Home() {
 
           <div className="grid grid-cols-12 gap-5">
             {categories ? categories.map((cat) => {
-              const tone = CATEGORY_TONES[cat.slug] || CATEGORY_TONES['for-adult']
+              const DEFAULT_TONE = { className: 'bg-white text-[#1F1F2E] border border-line col-span-12 lg:col-span-4', cta: 'text-orange-700', light: true, num: '' }
+              const tone = CATEGORY_TONES[cat.slug] || DEFAULT_TONE
               const img = CATEGORY_IMAGES[cat.slug]
               const localName = CATEGORY_NAMES[cat.slug] ?? cat.name
               const localDesc = CATEGORY_DESCS[cat.slug] ?? cat.description
@@ -143,9 +144,9 @@ export default function Home() {
                   <div className="cat-content">
                     <span className="num">{tone.num}</span>
                     <div>
-                      <h3 className={tone.className.includes('text-white') ? '!text-white' : ''}>{localName}</h3>
+                      <h3 className={tone.className?.includes('text-white') ? '!text-white' : ''}>{localName}</h3>
                       <p>{localDesc}</p>
-                      <span className="cat-cta" style={{ color: tone.cta.startsWith('text-') ? undefined : tone.cta }}>
+                      <span className="cat-cta" style={{ color: tone.cta?.startsWith('text-') ? undefined : tone.cta }}>
                         {t('home.viewProducts', { count: cat.products_count })} →
                       </span>
                     </div>
